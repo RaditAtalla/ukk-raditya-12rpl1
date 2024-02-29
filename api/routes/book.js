@@ -1,8 +1,8 @@
-const express = require("express")
-const { readBook, uploadBook } = require("../middleware/bookController")
-const router = express.Router()
+const express = require("express");
+const { readBook, uploadBook } = require("../middleware/bookController");
+const router = express.Router();
 
-router.get("/", uploadBook)
-router.post("/upload", readBook)
+router.get("/", readBook);
+router.post("/upload", uploadBook);
 
-module.exports = router
+module.exports = router;

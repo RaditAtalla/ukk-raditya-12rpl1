@@ -2,8 +2,20 @@ import { Edit, Plus, Trash } from "react-feather";
 import SearchBar from "../components/SearchBar";
 import ListCard from "../components/ListCard";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
 const Buku = () => {
+  const [books, setBooks] = useState([]);
+
+  axios
+    .get("http://localhost:3000/book")
+    .then((response) => {
+      setBooks(response.data.books);
+    })
+    .catch((error) => console.log(error));
+
+    let i = 1
   return (
     <div className="px-[20px]">
       <h1 className="mb-[35px] text-[1.5rem] font-semibold leading-none">
@@ -29,96 +41,20 @@ const Buku = () => {
           </tr>
         </thead>
         <tbody>
-          <ListCard
-            no={1}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={2}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={3}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={4}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={5}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={6}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={7}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={8}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={9}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
-          <ListCard
-            no={10}
-            img={"/img/cover.jpg"}
-            col1={"Filosofi Teras"}
-            col2={"Henry Manampiring"}
-            col3={"15/02/24"}
-            icon1={<Edit />}
-            icon2={<Trash />}
-          />
+          {books.map((book) => {
+            return (
+              <ListCard
+                key={book.BukuID}
+                no={i++}
+                img={"/img/cover.jpg"}
+                col1={book.Judul}
+                col2={book.Penulis}
+                col3={book.TanggalDitambah}
+                icon1={<Edit />}
+                icon2={<Trash />}
+              />
+            );
+          })}
         </tbody>
       </table>
     </div>
