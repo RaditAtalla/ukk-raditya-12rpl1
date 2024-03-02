@@ -28,4 +28,17 @@ function readBook(req, res) {
 	});
 }
 
-module.exports = { uploadBook, readBook };
+function handleDelete(req, res) {
+	const bookId = req.params.id
+	db.query(`DELETE FROM buku WHERE BukuID = ${bookId}`, (error, result) => {
+		if(error) throw error
+		res.send({message: "book deleted succesfully"})
+	})
+}
+
+function handleEdit(req, res) {
+	const bookId = req.params.id
+	console.log(bookId)
+}
+
+module.exports = { uploadBook, readBook, handleDelete, handleEdit };

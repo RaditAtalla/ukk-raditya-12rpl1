@@ -1,5 +1,5 @@
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputGroup from "../components/InputGroup";
 import PasswordInput from "../components/Passwordinput";
 import FileInput from "../components/FileInput";
@@ -13,7 +13,7 @@ const Edit = () => {
           <InputGroup
             label={"Username"}
             labelSize="1.5"
-            value={"@radit.rchmd"}
+            value={books.username}
           />
         </div>
         <div className="mb-[20px] w-full lg:w-[350px]">

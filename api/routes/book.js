@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const { readBook, uploadBook } = require("../middleware/bookController");
+const { readBook, uploadBook, handleDelete, handleEdit } = require("../middleware/bookController");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -15,5 +15,7 @@ const router = express.Router();
 
 router.get("/", readBook);
 router.post("/upload", upload.single("foto"), uploadBook);
+router.delete("/delete/:id", handleDelete)
+router.patch("/edit/:id", handleEdit)
 
 module.exports = router;

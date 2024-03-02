@@ -1,13 +1,29 @@
 import { Edit, Plus, Trash } from "react-feather";
 import SearchBar from "../components/SearchBar";
 import ListCard from "../components/ListCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import formatDate from "../functions/formatDate";
 
 const Buku = () => {
   const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
+
+  const handleDelete = (id) => {
+    console.log(id);
+
+    axios
+      .delete(`http://localhost:3000/book/delete/${id}`)
+      .then((response) => console.log(response.data.message))
+      .catch((error) => console.log(error));
+
+    navigate(0);
+  };
+
+  const handleEdit = (id) => {
+    navigate(`edit/${id}`);
+  };
 
   useEffect(() => {
     axios
@@ -55,8 +71,8 @@ const Buku = () => {
                 col1={book.Judul}
                 col2={book.Penulis}
                 col3={`${formatDate(book.TanggalDitambah)[1]} ${formatDate(book.TanggalDitambah)[2]} ${formatDate(book.TanggalDitambah)[3]}`}
-                icon1={<Edit />}
-                icon2={<Trash />}
+                icon1={<Edit onClick={() => handleEdit(book.BukuID)} />}
+                icon2={<Trash onClick={() => handleDelete(book.BukuID)} />}
               />
             );
           })}

@@ -20,6 +20,7 @@ import UsersBanned from "./pages/UsersBanned";
 import Peminjaman from "./pages/Peminjaman";
 import Pengembalian from "./pages/Pengembalian";
 import Petugas from "./pages/Petugas";
+import EditBook from "./pages/EditBook";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
           {
             path: "tambah",
             element: <AddBook />,
+          },
+          {
+            path: "edit/:id",
+            element: <EditBook />,
           },
         ],
       },

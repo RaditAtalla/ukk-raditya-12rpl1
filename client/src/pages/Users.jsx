@@ -18,7 +18,7 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/user/get")
+      .get("http://localhost:3000/user")
       .then((response) => {
         console.log(response.data.users);
         setUsers(response.data.users);
