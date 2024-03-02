@@ -8,7 +8,9 @@ const InputGroup = ({
   isDisabled,
   className,
   required,
-  onChange
+  onChange,
+  name,
+  autoFocus,
 }) => {
   return (
     <div className={`flex flex-col gap-[10px] leading-none ${className}`}>
@@ -26,6 +28,8 @@ const InputGroup = ({
         disabled={isDisabled}
         required={required}
         onChange={onChange}
+        name={name}
+        autoFocus={autoFocus}
         className="w-full rounded-lg border border-[#757575] px-4 py-2 text-[1.25rem] text-zinc-500 focus:outline-none"
       />
       <p className="text-[1.15rem] text-zinc-500">{hint}</p>

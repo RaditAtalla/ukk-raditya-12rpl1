@@ -4,14 +4,29 @@ import ListCard from "../components/ListCard";
 import InputGroup from "../components/InputGroup";
 import { Link } from "react-router-dom";
 import ReactModal from "react-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
+import axios from "axios";
+import formatDate from "../functions/formatDate";
 
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [users, setUsers] = useState([]);
   const handleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/user/get")
+      .then((response) => {
+        console.log(response.data.users);
+        setUsers(response.data.users);
+      })
+      .catch((error) => console.log("ada error: " + error));
+  }, []);
+
+  let i = 1;
 
   return (
     <>
@@ -61,76 +76,18 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            <ListCard
-              no={1}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={2}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={3}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={4}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={5}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={6}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={7}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={8}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={9}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
-            <ListCard
-              no={10}
-              col1={"Raditya Atallahasyrif Rachmadie"}
-              col2={"@radit.rchmd"}
-              col3={"15/02/24"}
-              icon1={<Slash onClick={handleModal} />}
-            />
+            {users.map((user) => {
+              return (
+                <ListCard
+                  key={user.UserID}
+                  no={i++}
+                  col1={user.NamaLengkap}
+                  col2={user.Username}
+                  col3={`${formatDate(user.TanggalBergabung)[1]} ${formatDate(user.TanggalBergabung)[2]} ${formatDate(user.TanggalBergabung)[3]}`}
+                  icon1={<Slash onClick={handleModal} />}
+                />
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddBook = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [judul, setJudul] = useState();
   const [foto, setFoto] = useState();
@@ -23,7 +23,7 @@ const AddBook = () => {
     setJudul(input.target.value);
   };
   const handleFoto = (input) => {
-    setFoto(input.target.value);
+    setFoto(input.target.files[0]);
   };
   const handlePenulis = (input) => {
     setPenulis(input.target.value);
@@ -53,27 +53,32 @@ const AddBook = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("judul", judul);
+    formData.append("foto", foto);
+    formData.append("penulis", penulis);
+    formData.append("penerbit", penerbit);
+    formData.append("tahunTerbit", tahunTerbit);
+    formData.append("jumlahHalaman", jumlahHalaman);
+    formData.append("kategori", kategori);
+    formData.append("bahasa", bahasa);
+    formData.append("lokasi", lokasi);
+    formData.append("deskripsi", deskripsi);
+
     await axios
-      .post("http://localhost:3000/book/upload", {
-        judul,
-        penulis,
-        penerbit,
-        tahunTerbit,
-        jumlahHalaman,
-        kategori,
-        bahasa,
-        lokasi,
-        deskripsi,
+      .post("http://localhost:3000/book/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      .then(response => {
-        console.log(response)
-        if(response.data.uploaded == false) {
-          console.log("upload failed")
-          return
+      .then((response) => {
+        console.log(response);
+        if (response.data.uploaded == false) {
+          console.log("upload failed");
+          return;
         }
-        navigate("/admin/buku")
+
+        navigate("/admin/buku");
       })
-      .catch(error => console.log(error))
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -87,6 +92,7 @@ const AddBook = () => {
             <InputGroup
               label={"Judul buku"}
               hint={"Contoh: Filosofi Teras"}
+              name={"judul"}
               required
               onChange={handleJudul}
             />
@@ -95,14 +101,17 @@ const AddBook = () => {
             <FileInput
               label={"Foto Cover"}
               hint={"Tipe: png, jpg, jpeg. Ukuran: <1mb"}
+              name={"foto"}
               accept={".jpg, .JPG, .jpeg, .JPEG, .png, .PNG"}
               required
+              onChange={handleFoto}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
             <InputGroup
               label={"Penulis buku"}
               hint={"Contoh: Henry Manampiring"}
+              name={"penulis"}
               required
               onChange={handlePenulis}
             />
@@ -111,6 +120,7 @@ const AddBook = () => {
             <InputGroup
               label={"Penerbit"}
               hint={"Contoh: Gramedia"}
+              name={"penerbit"}
               required
               onChange={handlePenerbit}
             />
@@ -119,6 +129,7 @@ const AddBook = () => {
             <InputGroup
               label={"Tahun Terbit"}
               hint={"Contoh: 15/02/2024"}
+              name={"tahunTerbit"}
               required
               onChange={handleTahunTerbit}
             />
@@ -127,6 +138,7 @@ const AddBook = () => {
             <InputGroup
               label={"Jumlah Halaman"}
               hint={"Contoh: 100"}
+              name={"jumlahHalaman"}
               required
               onChange={handleJumlahHalaman}
             />
@@ -135,6 +147,7 @@ const AddBook = () => {
             <InputGroup
               label={"Kategori"}
               hint={"Filsafat"}
+              name={"kategori"}
               required
               onChange={handleKategori}
             />
@@ -143,6 +156,7 @@ const AddBook = () => {
             <InputGroup
               label={"Bahasa"}
               hint={"Indonesia"}
+              name={"bahasa"}
               required
               onChange={handleBahasa}
             />
@@ -151,6 +165,7 @@ const AddBook = () => {
             <InputGroup
               label={"Lokasi"}
               hint={"Dipisah dengan titik koma"}
+              name={"lokasi"}
               required
               onChange={handleLokasi}
             />
@@ -160,6 +175,7 @@ const AddBook = () => {
             <textarea
               required
               onChange={handleDeskripsi}
+              name={"deskripsi"}
               className="mb-[10px] h-[260px] w-full rounded-lg border border-[#757575] p-[30px] text-[1.15rem] text-zinc-500 "
             />
           </div>

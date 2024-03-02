@@ -1,7 +1,9 @@
 const db = require("./database");
+const path = require("path");
 
 function uploadBook(req, res) {
 	const title = req.body.judul;
+	const cover = req.file;
 	const author = req.body.penulis;
 	const publisher = req.body.penerbit;
 	const releaseYear = req.body.tahunTerbit;
@@ -11,10 +13,12 @@ function uploadBook(req, res) {
 	const location = req.body.lokasi;
 	const description = req.body.deskripsi;
 
-	db.query(`INSERT INTO buku VALUES("", "${title}", "${author}", "${publisher}", "${releaseYear}", "", "${language}", "${pageCount}", "${description}", CURDATE())`, (error) => {
-		if (error) throw error;
-		res.send({ uploaded: true });
-	});
+	db.query(
+		`INSERT INTO buku VALUES("", "${title}", "${author}", "${publisher}", "${releaseYear}", "${path.parse(cover.filename).name}", "${language}", "${pageCount}", "${description}", CURDATE())`,
+		(error) => {
+			res.send({ uploaded: true });
+		}
+	);
 }
 
 function readBook(req, res) {

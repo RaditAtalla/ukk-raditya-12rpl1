@@ -3,19 +3,22 @@ import SearchBar from "../components/SearchBar";
 import ListCard from "../components/ListCard";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import formatDate from "../functions/formatDate";
 
 const Buku = () => {
   const [books, setBooks] = useState([]);
 
-  axios
-    .get("http://localhost:3000/book")
-    .then((response) => {
-      setBooks(response.data.books);
-    })
-    .catch((error) => console.log(error));
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/book")
+      .then((response) => {
+        setBooks(response.data.books);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-    let i = 1
+  let i = 1;
   return (
     <div className="px-[20px]">
       <h1 className="mb-[35px] text-[1.5rem] font-semibold leading-none">
@@ -46,10 +49,12 @@ const Buku = () => {
               <ListCard
                 key={book.BukuID}
                 no={i++}
-                img={"/img/cover.jpg"}
+                img={
+                  "http://localhost:3000/book-covers/" + book.FotoCover + ".jpg"
+                }
                 col1={book.Judul}
                 col2={book.Penulis}
-                col3={book.TanggalDitambah}
+                col3={`${formatDate(book.TanggalDitambah)[1]} ${formatDate(book.TanggalDitambah)[2]} ${formatDate(book.TanggalDitambah)[3]}`}
                 icon1={<Edit />}
                 icon2={<Trash />}
               />

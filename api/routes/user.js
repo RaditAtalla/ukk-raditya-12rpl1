@@ -1,5 +1,5 @@
 const express = require("express")
-const { handleRegister, handleLogin } = require("../middleware/userController")
+const { handleRegister, handleLogin, getUser } = require("../middleware/userController")
 const router = express.Router()
 
 router.get("/", (req, res) => {
@@ -9,5 +9,6 @@ router.get("/", (req, res) => {
 
 router.post("/login", handleLogin)
 router.post("/register", handleRegister)
+router.get("/get", getUser)
 
 module.exports = router

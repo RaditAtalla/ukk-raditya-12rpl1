@@ -18,45 +18,48 @@ function handleRegister(req, res) {
 		if (error) throw error;
 
 		db.query(`INSERT INTO user VALUES("", "${username}", "${hashPassword}", "${email}", "${name}", "${address}", "peminjam", "", now())`, (error, result) => {
-      if (error) throw error
-      console.log(result)
-      res.send({registered: true})
-    });
+			if (error) throw error;
+			console.log(result);
+			res.send({ registered: true });
+		});
 	});
 }
 
 function handleLogin(req, res) {
-  const username = req.body.username;
+	const username = req.body.username;
 	const password = req.body.password;
 
-  // let hasUsername = true
-  // let isPasswordCorrect = true
-  // let isAdmin = true
+	db.query(`SELECT * FROM user WHERE username = '${username}'`, (error, data) => {
+		if (error) throw error;
 
-  db.query(`SELECT * FROM user WHERE username = '${username}'`, (error, data) => {
-    if(error) throw error
+		if (data[0] == null) {
+			res.send({ hasUsername: false, isPasswordCorrect: false, isAdmin: false });
+			return;
+		}
 
-    if(data[0] == null) {
-      res.send({ hasUsername: false, isPasswordCorrect: false, isAdmin: false })
-      return
-    }
+		bcrypt.compare(password, data[0].Password, (error, result) => {
+			if (error) throw error;
 
-    bcrypt.compare(password, data[0].Password, (error, result) => {
-      if (error) throw error
+			if (result == false) {
+				res.send({ hasUsername: true, isPasswordCorrect: false, isAdmin: false });
+				return;
+			}
 
-      if(result == false) {
-        res.send({ hasUsername: true, isPasswordCorrect: false, isAdmin: false})
-        return
-      }
+			if (data[0].Akses == "petugas") {
+				res.send({ hasUsername: true, isPasswordCorrect: true, isAdmin: true });
+				return;
+			}
 
-      if(data[0].Akses == "petugas") {
-        res.send({ hasUsername: true, isPasswordCorrect: true, isAdmin: true })
-        return
-      }
-
-      res.send({ hasUsername: true, isPasswordCorrect: true, isAdmin: false })
-    })
-  })
+			res.send({ hasUsername: true, isPasswordCorrect: true, isAdmin: false });
+		});
+	});
 }
 
-module.exports = { handleLogin, handleRegister };
+function getUser(req, res) {
+	db.query('SELECT * FROM user WHERE Akses = "peminjam"', (error, users) => {
+		if (error) throw error;
+		res.send({ users });
+	});
+}
+
+module.exports = { handleLogin, handleRegister, getUser };
