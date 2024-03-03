@@ -63,14 +63,17 @@ const Petugas = () => {
     <>
       <ReactModal
         isOpen={isModalOpen}
+        shouldCloseOnOverlayClick
+        shouldCloseOnEsc
+        onRequestClose={handleModal}
+        overlayClassName={
+          "fixed top-0 left-0 right-0 bottom-0 bg-slate-100 bg-opacity-25"
+        }
         className={
-          "flex h-full w-full items-center rounded-lg px-[20px] lg:justify-center"
+          "absolute left-[40px] right-[40px] top-1/4 max-w-[482px] overflow-auto rounded-lg border-2 border-slate-200 bg-white px-[20px] py-[20px] outline-none sm:left-1/3"
         }
       >
-        <form
-          onSubmit={handleSubmit}
-          className="lg:px[40px] w-full rounded-lg border-2 border-slate-200 bg-white px-[20px] py-[30px] sm:px-[66px] lg:w-[550px] lg:py-[60px]"
-        >
+        <form onSubmit={handleSubmit}>
           <p className="mb-[35px] text-[3rem] font-bold">Tambah petugas</p>
           <InputGroup
             label={"Username"}

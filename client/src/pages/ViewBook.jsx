@@ -15,11 +15,17 @@ const ViewBook = () => {
     <div className="flex flex-col px-[20px] lg:px-[100px]">
       <ReactModal
         isOpen={isModalOpen}
+        shouldCloseOnOverlayClick
+        shouldCloseOnEsc
+        onRequestClose={handleModal}
+        overlayClassName={
+          "fixed top-0 left-0 right-0 bottom-0 bg-slate-100 bg-opacity-25"
+        }
         className={
-          "flex h-full w-full items-center rounded-lg px-[20px] lg:justify-center"
+          "absolute left-[40px] right-[40px] top-1/4 max-w-[482px] overflow-auto rounded-lg border-2 border-slate-200 bg-white px-[20px] py-[20px] outline-none sm:left-1/3"
         }
       >
-        <form className="lg:px[40px] w-full rounded-lg border-2 border-slate-200 bg-white px-[20px] py-[30px] lg:w-[550px] lg:py-[60px]">
+        <form>
           <X className="ms-auto cursor-pointer" onClick={handleModal} />
           <h2 className="mb-[12px] text-[3rem] font-medium">Tersedia di:</h2>
           <div className="mb-[12px] flex items-center justify-between leading-none">
