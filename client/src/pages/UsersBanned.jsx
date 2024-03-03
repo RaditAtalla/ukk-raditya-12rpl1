@@ -17,12 +17,19 @@ const UsersBanned = () => {
     fetchUsers();
   }, []);
 
+  function handleUnban(id) {
+    axios
+      .post(`http://localhost:3000/user/unban/${id}`)
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+  }
+
   let i = 1;
 
   return (
     <div className="px-[20px]">
       <h1 className="mb-[35px] text-[1.5rem] font-semibold leading-none">
-        Pengguna
+        Pengguna di-ban
       </h1>
       <div className="flex gap-[8px]">
         <SearchBar placeholder={"Cari buku.."} />
@@ -47,7 +54,7 @@ const UsersBanned = () => {
                 col2={user.AlasanBan}
                 col3={`${formatDate(user.TanggalBan)[1]} ${formatDate(user.TanggalBan)[2]} ${formatDate(user.TanggalBan)[3]}`}
                 icon1={<Eye />}
-                icon2={<ThumbsUp />}
+                icon2={<ThumbsUp onClick={() => handleUnban(user.UserID)} />}
               />
             );
           })}

@@ -63,7 +63,7 @@ function getUser(req, res) {
 }
 
 function getBannedUser(req, res) {
-	const sql = "SELECT Username, AlasanBan, TanggalBan FROM user INNER JOIN alasanban ON user.UserID = alasanban.UserID";
+	const sql = "SELECT user.UserID, Username, AlasanBan, TanggalBan FROM user INNER JOIN alasanban ON user.UserID = alasanban.UserID";
 	db.query(sql, (error, bannedUsers) => {
 		if (error) throw error;
 		res.send({ bannedUsers });
@@ -76,11 +76,29 @@ function handleBan(req, res) {
 
 	db.query(`UPDATE user SET status = "ban" WHERE UserID = ${userId}`, (error, result) => {
 		if (error) throw error;
-	});
-
-	db.query(`INSERT INTO alasanban VALUES("", "${userId}", "${alasan}", now())`, (error) => {
-		if (error) throw error;
+		if (result) {
+			db.query(`INSERT INTO alasanban VALUES("", "${userId}", "${alasan}", now())`, (error) => {
+				if (error) throw error;
+			});
+		}
 	});
 }
 
-module.exports = { handleLogin, handleRegister, getUser, handleBan, getBannedUser };
+function handleUnban(req, res) {
+	const userId = req.params.id;
+
+	db.query(`UPDATE user SET status = "aktif" WHERE UserID = ${userId}`, (error, result) => {
+		if (error) throw error;
+		if (result) {
+			db.query(`DELETE FROM alasanban WHERE UserID = ${userId}`, (error) => {
+				if (error) throw error;
+			});
+			res.send("unban user");
+			return;
+		}
+
+		res.send("fail unban");
+	});
+}
+
+module.exports = { handleLogin, handleRegister, getUser, handleBan, getBannedUser, handleUnban };
