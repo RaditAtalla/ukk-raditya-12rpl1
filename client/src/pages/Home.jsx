@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
 import BookCard from "../components/BookCard";
 import Dropdown from "../components/Dropdown";
 import SearchBar from "../components/SearchBar";
+import axios from "axios";
 
 const Home = () => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    async function fetchBook() {
+      const reponse = await axios.get("http://localhost:3000/book");
+      setBooks(reponse.data.books);
+    }
+
+    fetchBook();
+  }, []);
+
   return (
     <div className="md:px-10 xl:flex xl:items-start xl:gap-[50px]">
       <img
@@ -21,50 +34,22 @@ const Home = () => {
           </div>
         </div>
         <div className="flex flex-wrap items-center  justify-center gap-[50px]">
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
-          <BookCard
-            title={"Filosofi Teras"}
-            author={"Henry Manampiring"}
-            image={"img/cover.jpg"}
-          />
+          {books.map((book) => {
+            return (
+              <BookCard
+                key={book.BukuID}
+                title={book.Judul}
+                author={book.Penulis}
+                image={
+                  "http://localhost:3000/book-covers/" + book.FotoCover + ".jpg"
+                }
+              />
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-export default Home
+export default Home;
