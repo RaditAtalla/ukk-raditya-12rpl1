@@ -23,9 +23,12 @@ const Dropdown = ({ placeholder, values }) => {
       <div
         className={`${isDropped ? "" : "hidden"} absolute top-[70px] flex w-full flex-col rounded-b-lg rounded-t-none border border-t-0 border-slate-200 bg-white py-[20px] shadow-lg shadow-slate-100`}
       >
-        {values.map((value) => {
+        {values.map((value, index) => {
           return (
-            <button className="px-[20px] py-[10px] text-[1.15rem] hover:bg-slate-100 ">
+            <button
+              key={index}
+              className="px-[20px] py-[10px] text-[1.15rem] hover:bg-slate-100 "
+            >
               {value}
             </button>
           );
