@@ -11,8 +11,6 @@ const Buku = () => {
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
-    console.log(id);
-
     axios
       .delete(`http://localhost:3000/book/delete/${id}`)
       .then((response) => console.log(response.data.message))

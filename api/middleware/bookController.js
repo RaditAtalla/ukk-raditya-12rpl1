@@ -28,17 +28,25 @@ function readBook(req, res) {
 	});
 }
 
+function readBookInEdit(req, res) {
+	const id = req.params.id
+	db.query(`SELECT * FROM buku WHERE BukuID = ${id}`, (error, books) => {
+		if (error) throw error;
+		res.send({ books });
+	});
+}
+
 function handleDelete(req, res) {
-	const bookId = req.params.id
+	const bookId = req.params.id;
 	db.query(`DELETE FROM buku WHERE BukuID = ${bookId}`, (error, result) => {
-		if(error) throw error
-		res.send({message: "book deleted succesfully"})
-	})
+		if (error) throw error;
+		res.send({ message: "book has been deleted succesfully" });
+	});
 }
 
 function handleEdit(req, res) {
-	const bookId = req.params.id
-	console.log(bookId)
+	const bookId = req.params.id;
+	res.send(bookId);
 }
 
-module.exports = { uploadBook, readBook, handleDelete, handleEdit };
+module.exports = { uploadBook, readBook, readBookInEdit, handleDelete, handleEdit };

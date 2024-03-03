@@ -2,7 +2,7 @@ import InputGroup from "../components/InputGroup";
 import FileInput from "../components/FileInput";
 import Button from "../components/Button";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditBook = () => {
@@ -19,6 +19,20 @@ const EditBook = () => {
   const [bahasa, setBahasa] = useState();
   const [lokasi, setLokasi] = useState();
   const [deskripsi, setDeskripsi] = useState();
+  const [books, setBooks] = useState([{}]);
+
+  useEffect(() => {
+    function fetchBooks() {
+      axios
+        .get(`http://localhost:3000/book/edit/${id}`)
+        .then((response) => {
+          setBooks(response.data.books);
+        })
+        .catch((error) => console.log(error));
+    }
+
+    fetchBooks();
+  }, []);
 
   const handleJudul = (input) => {
     setJudul(input.target.value);
@@ -54,28 +68,28 @@ const EditBook = () => {
   const handleSubmit = async (e, id) => {
     e.preventDefault();
 
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    await axios
-      .patch(`http://localhost:3000/book/edit/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.data.uploaded == false) {
-          console.log("upload failed");
-          return;
-        }
+    // await axios
+    //   .patch(`http://localhost:3000/book/edit/${id}`, formData, {
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.data.uploaded == false) {
+    //       console.log("upload failed");
+    //       return;
+    //     }
 
-        navigate("/admin/buku");
-      })
-      .catch((error) => console.log(error));
+    //     navigate("/admin/buku");
+    //   })
+    //   .catch((error) => console.log(error));
   };
 
   return (
     <div className="px-[20px]">
       <h1 className="mb-[35px] text-[1.5rem] font-semibold leading-none">
-        Tambah Buku
+        Edit Buku
       </h1>
       <form className="max-w-[722px]" onSubmit={handleSubmit}>
         <div className="flex flex-wrap gap-[20px]">
@@ -86,6 +100,7 @@ const EditBook = () => {
               name={"judul"}
               required
               onChange={handleJudul}
+              value={books[0].Judul || ""}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
@@ -105,6 +120,7 @@ const EditBook = () => {
               name={"penulis"}
               required
               onChange={handlePenulis}
+              value={books[0].Penulis || ""}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
@@ -114,6 +130,7 @@ const EditBook = () => {
               name={"penerbit"}
               required
               onChange={handlePenerbit}
+              value={books[0].Penerbit || ""}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
@@ -123,6 +140,7 @@ const EditBook = () => {
               name={"tahunTerbit"}
               required
               onChange={handleTahunTerbit}
+              value={books[0].TahunTerbit || ""}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
@@ -132,6 +150,7 @@ const EditBook = () => {
               name={"jumlahHalaman"}
               required
               onChange={handleJumlahHalaman}
+              value={books[0].JumlahHalaman || ""}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
@@ -141,6 +160,7 @@ const EditBook = () => {
               name={"kategori"}
               required
               onChange={handleKategori}
+              value={"Kategori"}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
@@ -150,6 +170,7 @@ const EditBook = () => {
               name={"bahasa"}
               required
               onChange={handleBahasa}
+              value={books[0].Bahasa || ""}
             />
           </div>
           <div className="w-full sm:max-w-[350px]">
@@ -159,6 +180,7 @@ const EditBook = () => {
               name={"lokasi"}
               required
               onChange={handleLokasi}
+              value={"Lokasi"}
             />
           </div>
           <div className="flex w-full flex-col gap-[10px] sm:max-w-[722px]">
@@ -168,6 +190,7 @@ const EditBook = () => {
               onChange={handleDeskripsi}
               name={"deskripsi"}
               className="mb-[10px] h-[260px] w-full rounded-lg border border-[#757575] p-[30px] text-[1.15rem] text-zinc-500 "
+              value={books[0].Deskripsi || ""}
             />
           </div>
         </div>

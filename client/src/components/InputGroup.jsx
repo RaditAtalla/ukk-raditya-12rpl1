@@ -11,6 +11,7 @@ const InputGroup = ({
   onChange,
   name,
   autoFocus,
+  defaultValue,
 }) => {
   return (
     <div className={`flex flex-col gap-[10px] leading-none ${className}`}>
@@ -25,6 +26,7 @@ const InputGroup = ({
         id="judulBuku"
         placeholder={placeholder}
         value={value}
+        defaultValue={defaultValue}
         disabled={isDisabled}
         required={required}
         onChange={onChange}
