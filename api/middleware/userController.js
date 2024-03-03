@@ -17,7 +17,7 @@ function handleRegister(req, res) {
 	bcrypt.hash(password, 10, (error, hashPassword) => {
 		if (error) throw error;
 
-		db.query(`INSERT INTO user VALUES("", "${username}", "${hashPassword}", "${email}", "${name}", "${address}", "peminjam", "", now())`, (error, result) => {
+		db.query(`INSERT INTO user VALUES("", "${username}", "${hashPassword}", "${email}", "${name}", "${address}", "peminjam", "", "aktif", now())`, (error, result) => {
 			if (error) throw error;
 			console.log(result);
 			res.send({ registered: true });
@@ -56,10 +56,23 @@ function handleLogin(req, res) {
 }
 
 function getUser(req, res) {
-	db.query('SELECT * FROM user WHERE Akses = "peminjam"', (error, users) => {
+	db.query('SELECT * FROM user WHERE Akses = "peminjam" AND status = "aktif"', (error, users) => {
 		if (error) throw error;
 		res.send({ users });
 	});
 }
 
-module.exports = { handleLogin, handleRegister, getUser };
+function handleBan(req, res) {
+	const userId = req.params.id;
+	const alasan = req.body.alasanBan;
+
+	db.query(`UPDATE user SET status = "ban" WHERE UserID = ${userId}`, (error, result) => {
+		if (error) throw error;
+	});
+
+	db.query(`INSERT INTO alasanban VALUES("", "${userId}", "${alasan}")`, error => {
+		if (error) throw error
+	});
+}
+
+module.exports = { handleLogin, handleRegister, getUser, handleBan };

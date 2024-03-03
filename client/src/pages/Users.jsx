@@ -12,19 +12,34 @@ import formatDate from "../functions/formatDate";
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [users, setUsers] = useState([]);
+  const [banId, setBanId] = useState();
+  const [alasan, setAlasan] = useState();
+
   const handleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const handleAlasan = (input) => {
+    setAlasan(input.target.value);
   };
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/user")
       .then((response) => {
-        console.log(response.data.users);
         setUsers(response.data.users);
       })
       .catch((error) => console.log("ada error: " + error));
   }, []);
+
+  const handleSubmit = () => {
+    const userId = banId;
+    const alasanBan = alasan;
+    axios
+      .post(`http://localhost:3000/user/ban/${userId}`, { alasanBan })
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+  };
 
   let i = 1;
 
@@ -42,7 +57,7 @@ const Users = () => {
           "absolute left-[40px] right-[40px] top-1/4 max-w-[482px] overflow-auto rounded-lg border-2 border-slate-200 bg-white px-[20px] py-[20px] outline-none sm:left-1/3"
         }
       >
-        <form action="">
+        <form action="" onSubmit={handleSubmit}>
           <p className="text-[3rem] font-bold">Ban Pengguna?</p>
           <p className="mb-[35px] text-[1.15rem] font-bold leading-none text-zinc-500">
             Ban @radit.rchmd
@@ -51,6 +66,7 @@ const Users = () => {
             label={"Alasan"}
             labelSize="1.5"
             className={"mb-[50px]"}
+            onChange={handleAlasan}
           />
           <Button text={"Ban"} isFull />
         </form>
@@ -87,7 +103,14 @@ const Users = () => {
                   col1={user.NamaLengkap}
                   col2={user.Username}
                   col3={`${formatDate(user.TanggalBergabung)[1]} ${formatDate(user.TanggalBergabung)[2]} ${formatDate(user.TanggalBergabung)[3]}`}
-                  icon1={<Slash onClick={handleModal} />}
+                  icon1={
+                    <Slash
+                      onClick={() => {
+                        setBanId(user.UserID);
+                        handleModal();
+                      }}
+                    />
+                  }
                 />
               );
             })}
