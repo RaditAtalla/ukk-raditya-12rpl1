@@ -62,6 +62,14 @@ function getUser(req, res) {
 	});
 }
 
+function getBannedUser(req, res) {
+	const sql = "SELECT Username, AlasanBan, TanggalBan FROM user INNER JOIN alasanban ON user.UserID = alasanban.UserID";
+	db.query(sql, (error, bannedUsers) => {
+		if (error) throw error;
+		res.send({ bannedUsers });
+	});
+}
+
 function handleBan(req, res) {
 	const userId = req.params.id;
 	const alasan = req.body.alasanBan;
@@ -70,9 +78,9 @@ function handleBan(req, res) {
 		if (error) throw error;
 	});
 
-	db.query(`INSERT INTO alasanban VALUES("", "${userId}", "${alasan}")`, error => {
-		if (error) throw error
+	db.query(`INSERT INTO alasanban VALUES("", "${userId}", "${alasan}", now())`, (error) => {
+		if (error) throw error;
 	});
 }
 
-module.exports = { handleLogin, handleRegister, getUser, handleBan };
+module.exports = { handleLogin, handleRegister, getUser, handleBan, getBannedUser };

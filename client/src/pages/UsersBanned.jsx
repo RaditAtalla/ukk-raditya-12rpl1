@@ -1,8 +1,24 @@
 import { Eye, ThumbsUp } from "react-feather";
 import SearchBar from "../components/SearchBar";
 import ListCard from "../components/ListCard";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import formatDate from "../functions/formatDate";
 
 const UsersBanned = () => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function fetchUsers() {
+      const response = await axios.get("http://localhost:3000/user/banned");
+      setUsers(response.data.bannedUsers);
+    }
+
+    fetchUsers();
+  }, []);
+
+  let i = 1;
+
   return (
     <div className="px-[20px]">
       <h1 className="mb-[35px] text-[1.5rem] font-semibold leading-none">
@@ -22,86 +38,19 @@ const UsersBanned = () => {
           </tr>
         </thead>
         <tbody>
-          <ListCard
-            no={1}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={2}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={3}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={4}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={5}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={6}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={7}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={8}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={9}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
-          <ListCard
-            no={10}
-            col1={"@radit.rchmd"}
-            col2={"Melanggar aturan"}
-            col3={"15/02/24"}
-            icon1={<Eye />}
-            icon2={<ThumbsUp />}
-          />
+          {users.map((user) => {
+            return (
+              <ListCard
+                key={user.UserID}
+                no={i++}
+                col1={user.Username}
+                col2={user.AlasanBan}
+                col3={`${formatDate(user.TanggalBan)[1]} ${formatDate(user.TanggalBan)[2]} ${formatDate(user.TanggalBan)[3]}`}
+                icon1={<Eye />}
+                icon2={<ThumbsUp />}
+              />
+            );
+          })}
         </tbody>
       </table>
     </div>
