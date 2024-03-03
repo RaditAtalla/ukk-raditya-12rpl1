@@ -22,8 +22,8 @@ const EditBook = () => {
   const [books, setBooks] = useState([{}]);
 
   useEffect(() => {
-    function fetchBooks() {
-      axios
+    async function fetchBooks() {
+      await axios
         .get(`http://localhost:3000/book/edit/${id}`)
         .then((response) => {
           setBooks(response.data.books);
