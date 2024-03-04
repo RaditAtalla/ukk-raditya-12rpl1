@@ -146,7 +146,7 @@ const AddBook = () => {
           <div className="w-full sm:max-w-[350px]">
             <InputGroup
               label={"Kategori"}
-              hint={"Filsafat"}
+              hint={"Contoh: Filsafat"}
               name={"kategori"}
               required
               onChange={handleKategori}
@@ -155,7 +155,7 @@ const AddBook = () => {
           <div className="w-full sm:max-w-[350px]">
             <InputGroup
               label={"Bahasa"}
-              hint={"Indonesia"}
+              hint={"Contoh: Indonesia"}
               name={"bahasa"}
               required
               onChange={handleBahasa}

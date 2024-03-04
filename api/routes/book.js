@@ -7,17 +7,17 @@ const storage = multer.diskStorage({
 		cb(null, "public/book-covers/");
 	},
 	filename: function (req, file, cb) {
-		cb(null, Math.floor(Math.random() * (999 - 100) ) + 100 + "_" + file.originalname);
+		cb(null, Math.floor(Math.random() * (999 - 100)) + 100 + "_" + file.originalname);
 	},
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage, limits: { fileSize: 1048576 } });
 const router = express.Router();
 
 router.get("/", readBook);
 router.post("/upload", upload.single("foto"), uploadBook);
-router.delete("/delete/:id", handleDelete)
-router.get("/edit/:id", readBookInEdit)
-router.patch("/edit/:id", handleEdit)
+router.delete("/delete/:id", handleDelete);
+router.get("/edit/:id", readBookInEdit);
+router.patch("/edit/:id", handleEdit);
 
 module.exports = router;

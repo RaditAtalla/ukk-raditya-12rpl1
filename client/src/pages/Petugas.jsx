@@ -29,8 +29,6 @@ const Petugas = () => {
     await axios
       .post("http://localhost:3000/moderator/revoke", { id })
       .catch((error) => console.log(error));
-
-    return setRevoke("");
   };
   const handleSubmit = async (e) => {
     e.preventDefault();

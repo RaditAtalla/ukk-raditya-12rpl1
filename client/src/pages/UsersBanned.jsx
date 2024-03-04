@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const UsersBanned = () => {
   const [users, setUsers] = useState([]);
+  const [unban, setUnban] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,13 +18,16 @@ const UsersBanned = () => {
     }
 
     fetchUsers();
-  }, []);
+    return setUnban("")
+  }, [unban]);
 
   const handleView = (id) => {
     navigate(`../lihat/${id}`);
   };
 
   function handleUnban(id) {
+    setUnban("unban")
+
     axios
       .post(`http://localhost:3000/user/unban/${id}`)
       .then((response) => console.log(response))

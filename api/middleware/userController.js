@@ -78,7 +78,7 @@ function handleBan(req, res) {
 		if (error) throw error;
 		if (result) {
 			db.query(`INSERT INTO alasanban VALUES("", "${userId}", "${alasan}", now())`, (error) => {
-				if (error) throw error;
+				if (error) throw error
 			});
 		}
 	});

@@ -16,6 +16,7 @@ function uploadBook(req, res) {
 	db.query(
 		`INSERT INTO buku VALUES("", "${title}", "${author}", "${publisher}", "${releaseYear}", "${path.parse(cover.filename).name}", "${language}", "${pageCount}", "${description}", CURDATE())`,
 		(error) => {
+			if (error) throw error
 			res.send({ uploaded: true });
 		}
 	);

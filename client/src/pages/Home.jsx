@@ -24,7 +24,7 @@ const Home = () => {
         className="hidden w-[300px] border border-slate-200 object-contain shadow-lg shadow-slate-200 xl:inline-block"
       />
       <div>
-        <div className="mb-[50px] flex flex-col gap-[10px] px-[20px] sm:px-0 lg:flex-row">
+        <div className="mb-[50px] flex w-full flex-col gap-[10px] px-[20px] sm:px-0 lg:flex-row">
           <SearchBar placeholder={"Cari buku.."} />
           <div className="w-full lg:w-[300px]">
             <Dropdown
