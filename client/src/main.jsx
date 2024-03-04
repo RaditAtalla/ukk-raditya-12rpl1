@@ -21,6 +21,7 @@ import Peminjaman from "./pages/Peminjaman";
 import Pengembalian from "./pages/Pengembalian";
 import Petugas from "./pages/Petugas";
 import EditBook from "./pages/EditBook";
+import ViewUser from "./pages/ViewUser";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
           {
             path: "banned",
             element: <UsersBanned />,
+          },
+          {
+            path: "lihat/:id",
+            element: <ViewUser />,
           },
         ],
       },

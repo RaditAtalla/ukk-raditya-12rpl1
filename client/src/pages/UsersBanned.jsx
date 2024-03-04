@@ -4,9 +4,11 @@ import ListCard from "../components/ListCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import formatDate from "../functions/formatDate";
+import { useNavigate } from "react-router-dom";
 
 const UsersBanned = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUsers() {
@@ -16,6 +18,10 @@ const UsersBanned = () => {
 
     fetchUsers();
   }, []);
+
+  const handleView = (id) => {
+    navigate(`../lihat/${id}`);
+  };
 
   function handleUnban(id) {
     axios
@@ -53,7 +59,7 @@ const UsersBanned = () => {
                 col1={user.Username}
                 col2={user.AlasanBan}
                 col3={`${formatDate(user.TanggalBan)[1]} ${formatDate(user.TanggalBan)[2]} ${formatDate(user.TanggalBan)[3]}`}
-                icon1={<Eye />}
+                icon1={<Eye onClick={() => handleView(user.UserID)} />}
                 icon2={<ThumbsUp onClick={() => handleUnban(user.UserID)} />}
               />
             );

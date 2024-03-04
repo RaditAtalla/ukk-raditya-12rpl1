@@ -19,13 +19,11 @@ const BookCard = ({ image, title, author, date, action }) => {
             {title}
           </h2>
           <p className="line-clamp-1 text-[1.15rem] text-zinc-500">{author}</p>
-          {date ? 
-          <p className="line-clamp-1 text-[1.15rem] text-zinc-500">
-            Dikembalikan pada {date}
-          </p>
-          :
-          null
-          }
+          {date ? (
+            <p className="line-clamp-1 text-[1.15rem] text-zinc-500">
+              Dikembalikan pada {date}
+            </p>
+          ) : null}
         </div>
         <div className="flex gap-[8px]">
           <Link to={"/lihat"} className="w-full">

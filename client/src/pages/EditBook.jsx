@@ -34,6 +34,8 @@ const EditBook = () => {
     fetchBooks();
   }, []);
 
+  console.log(books);
+
   const handleJudul = (input) => {
     setJudul(input.target.value);
   };

@@ -12,6 +12,7 @@ const InputGroup = ({
   name,
   autoFocus,
   defaultValue,
+  id
 }) => {
   return (
     <div className={`flex flex-col gap-[10px] leading-none ${className}`}>
@@ -23,7 +24,7 @@ const InputGroup = ({
       </label>
       <input
         type="text"
-        id="judulBuku"
+        id={id}
         placeholder={placeholder}
         value={value}
         defaultValue={defaultValue}

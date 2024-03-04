@@ -101,4 +101,12 @@ function handleUnban(req, res) {
 	});
 }
 
-module.exports = { handleLogin, handleRegister, getUser, handleBan, getBannedUser, handleUnban };
+function getUserDetail(req, res) {
+	const id = req.params.id
+	db.query(`SELECT * FROM user WHERE UserID = ${id}`, (error, details) => {
+		if (error) throw error
+		res.send({details})
+	})
+}
+
+module.exports = { handleLogin, handleRegister, getUser, handleBan, getBannedUser, handleUnban, getUserDetail };
