@@ -5,11 +5,24 @@ const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
 const bookRouter = require("./routes/book");
 const modRouter = require("./routes/moderator");
+const session = require("express-session");
+const db = require("./middleware/database");
+const MySQLStore = require("express-mysql-session")(session)
+
+const sessionStore = new MySQLStore({}, db)
 
 app.use(
 	cors({
 		origin: "http://localhost:5173",
 		credentials: true,
+	})
+);
+app.use(
+	session({
+		secret: "rachmadie",
+		resave: false,
+		saveUninitialized: false,
+		store: sessionStore
 	})
 );
 app.use(express.json());

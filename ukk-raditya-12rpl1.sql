@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 29, 2024 at 10:09 AM
+-- Generation Time: Mar 05, 2024 at 01:35 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,8 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `alasanban` (
   `AlasanBanID` int(11) NOT NULL,
-  `StatusUserID` int(11) NOT NULL,
-  `AlasanBan` varchar(255) NOT NULL
+  `UserID` int(11) NOT NULL,
+  `AlasanBan` varchar(255) NOT NULL,
+  `TanggalBan` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -57,9 +58,8 @@ CREATE TABLE `buku` (
 --
 
 INSERT INTO `buku` (`BukuID`, `Judul`, `Penulis`, `Penerbit`, `TahunTerbit`, `FotoCover`, `Bahasa`, `JumlahHalaman`, `Deskripsi`, `TanggalDitambah`) VALUES
-(18, 'book1', 'author', 'publisher', 2024, '', 'indonesia', 100, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nesciunt. At, recusandae tempora! Blanditiis culpa quidem, distinctio dignissimos voluptas quasi mollitia, libero similique dolore exercitationem voluptates numquam hic in sunt quae ab ', '2024-02-29'),
-(19, 'book2', 'author', 'publisher', 2024, '', 'indonesia', 100, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nesciunt. At, recusandae tempora! Blanditiis culpa quidem, distinctio dignissimos voluptas quasi mollitia, libero similique dolore exercitationem voluptates numquam hic in sunt quae ab ', '2024-02-29'),
-(20, 'book3', 'author', 'publisher', 2024, '', 'indonesia', 100, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, nesciunt. At, recusandae tempora! Blanditiis culpa quidem, distinctio dignissimos voluptas quasi mollitia, libero similique dolore exercitationem voluptates numquam hic in sunt quae ab ', '2024-02-29');
+(44, 'Filosofi Teras', 'Henry Manampiring', 'Penerbit Buku Kompas', 2018, '972_filosofi_teras', 'Indonesia', 298, 'Lebih dari 2000 tahun lalu, sebuah mazhab filsafat menemukan akar masalah dan juga solusi dari banyak emosi negatif. Stoisisme, atau Filosofi Teras, adalah filsafat Yunani-Romawi kuno yang bisa membantu kita mengatasi emosi negatif dan menghasilkan mental', '2024-03-02'),
+(52, '10 dosa besar Soeharto', 'saya', 'mereka', 2024, '275_filosofi_teras', 'indonesia', 100, 'lorem ipsum', '2024-03-04');
 
 -- --------------------------------------------------------
 
@@ -112,10 +112,7 @@ CREATE TABLE `lokasi` (
 --
 
 INSERT INTO `lokasi` (`LokasiID`, `Lokasi`) VALUES
-(1, 'Perpustakaan Telkom'),
-(2, 'Perpustakaan Gadjah Mada'),
-(3, 'Perpustakaan Tasbih'),
-(4, 'Perpustakaan Pusat');
+(6, 'asdfa');
 
 -- --------------------------------------------------------
 
@@ -147,13 +144,13 @@ CREATE TABLE `peminjaman` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `statususer`
+-- Table structure for table `sessions`
 --
 
-CREATE TABLE `statususer` (
-  `StatusUserID` int(11) NOT NULL,
-  `UserID` int(11) NOT NULL,
-  `status` varchar(10) NOT NULL
+CREATE TABLE `sessions` (
+  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `expires` int(11) UNSIGNED NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -185,6 +182,7 @@ CREATE TABLE `user` (
   `Alamat` text NOT NULL,
   `Akses` varchar(10) NOT NULL,
   `FotoProfil` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
   `TanggalBergabung` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -192,18 +190,20 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`UserID`, `Username`, `Password`, `Email`, `NamaLengkap`, `Alamat`, `Akses`, `FotoProfil`, `TanggalBergabung`) VALUES
-(21, 'user', '$2b$10$vm4hA.tCuXiKamQmadNX/.HnFAsLIJ.kxidck5zUHw1FFptusVv0K', 'mail@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(22, 'user1', '$2b$10$0KXAAISt.g8jZog0FPIIkuUuqqC/Rss9FB/caEUeTDhn5qHcsB6x6', 'mail1@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(24, 'user2', '$2b$10$G/S09Wq1C9fAwjw/3z/97OtOdXCdIaGKPFAfFnQ4hm2IAIlIvdPHS', 'mail2@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(25, 'user3', '$2b$10$W4NDZRoxza1WbPPrxOBCg.TbsDES1XM83JLuzf8Ju9q917qyzw4oS', 'mail3@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(26, 'user4', '$2b$10$4D1yNdESmPc.riAWW1c4UeMCU9Zc0JeftALkt2P8RwDO7wAAM69Qy', 'mail5@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(27, 'user5', '$2b$10$ITE4GQ/8JiSs9fc7qaj3Z.21FQpem.mWdD0s1r2WEM2K9ziFuV0Na', 'mail5@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(28, 'user6', '$2b$10$WjoR3MfRSyi7o3VVwSt91.Lxq4NlWZjZFNbBftADJky9uHDQOcdzm', 'mail6@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(29, 'user7', '$2b$10$hb85DeFcN36qm/gRxuKh3u0DRZu9SOvXFbRi2KVKJP3GD/ju7xuoa', 'mail7@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-28'),
-(30, 'petugas', '$2b$10$ReCHRNc0xNrsEmb3rOHgyuyclodrvDgRCmR9xaE.p/OGHPSooonhi', 'petugas@mail.com', 'petugas', 'kantor', 'petugas', '', '2024-02-28'),
-(31, 'petugas2', '$2b$10$GZpCXRdHUSiqqcMLPXSbquq0gZpZ2BME3LK3etlzrumPXB37DSAd2', 'petugas@mail.com', 'nama', 'alamat', 'petugas', '', '2024-02-29'),
-(32, 'user8', '$2b$10$ir31.QlaTgtfwq7M/XEOueF0dVTkA5RnfIj2KSfMMEtYx/lHbw1Wu', 'mail8@mail.com', 'nama', 'alamat', 'peminjam', '', '2024-02-29');
+INSERT INTO `user` (`UserID`, `Username`, `Password`, `Email`, `NamaLengkap`, `Alamat`, `Akses`, `FotoProfil`, `status`, `TanggalBergabung`) VALUES
+(21, 'user', '$2b$10$vm4hA.tCuXiKamQmadNX/.HnFAsLIJ.kxidck5zUHw1FFptusVv0K', 'mail@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(22, 'user1', '$2b$10$0KXAAISt.g8jZog0FPIIkuUuqqC/Rss9FB/caEUeTDhn5qHcsB6x6', 'mail1@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(24, 'user2', '$2b$10$G/S09Wq1C9fAwjw/3z/97OtOdXCdIaGKPFAfFnQ4hm2IAIlIvdPHS', 'mail2@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(25, 'user3', '$2b$10$W4NDZRoxza1WbPPrxOBCg.TbsDES1XM83JLuzf8Ju9q917qyzw4oS', 'mail3@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(26, 'user4', '$2b$10$4D1yNdESmPc.riAWW1c4UeMCU9Zc0JeftALkt2P8RwDO7wAAM69Qy', 'mail5@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(27, 'user5', '$2b$10$ITE4GQ/8JiSs9fc7qaj3Z.21FQpem.mWdD0s1r2WEM2K9ziFuV0Na', 'mail5@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(28, 'user6', '$2b$10$WjoR3MfRSyi7o3VVwSt91.Lxq4NlWZjZFNbBftADJky9uHDQOcdzm', 'mail6@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(29, 'user7', '$2b$10$hb85DeFcN36qm/gRxuKh3u0DRZu9SOvXFbRi2KVKJP3GD/ju7xuoa', 'mail7@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-28'),
+(30, 'petugas', '$2b$10$ReCHRNc0xNrsEmb3rOHgyuyclodrvDgRCmR9xaE.p/OGHPSooonhi', 'petugas@mail.com', 'petugas', 'kantor', 'petugas', '', 'aktif', '2024-02-28'),
+(31, 'petugas2', '$2b$10$GZpCXRdHUSiqqcMLPXSbquq0gZpZ2BME3LK3etlzrumPXB37DSAd2', 'petugas@mail.com', 'nama', 'alamat', 'petugas', '', 'aktif', '2024-02-29'),
+(32, 'user8', '$2b$10$ir31.QlaTgtfwq7M/XEOueF0dVTkA5RnfIj2KSfMMEtYx/lHbw1Wu', 'mail8@mail.com', 'nama', 'alamat', 'peminjam', '', 'aktif', '2024-02-29'),
+(33, 'user9', '$2b$10$SeABn84.zowWdHsMYZQteuQvvIUuGwENUlTgWCkbDaRBiU63b7bue', 'mail9@mail.com', 'nama', 'mail9@mail.com', 'peminjam', '', 'aktif', '2024-02-29'),
+(34, 'user10', '$2b$10$/oHR8I7zHey3JdI03nSj0.JG83UwIE6oOJmvBsMxdBBre9exSZPq2', 'mail10@mail.com', 'nama', 'mail10@mail.com', 'peminjam', '', 'aktif', '2024-03-03');
 
 --
 -- Indexes for dumped tables
@@ -214,7 +214,7 @@ INSERT INTO `user` (`UserID`, `Username`, `Password`, `Email`, `NamaLengkap`, `A
 --
 ALTER TABLE `alasanban`
   ADD PRIMARY KEY (`AlasanBanID`),
-  ADD KEY `StatusUserID` (`StatusUserID`);
+  ADD KEY `UserID` (`UserID`);
 
 --
 -- Indexes for table `buku`
@@ -268,11 +268,10 @@ ALTER TABLE `peminjaman`
   ADD KEY `foreignBukuToPeminjaman` (`BukuID`);
 
 --
--- Indexes for table `statususer`
+-- Indexes for table `sessions`
 --
-ALTER TABLE `statususer`
-  ADD PRIMARY KEY (`StatusUserID`),
-  ADD KEY `UserID` (`UserID`);
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`session_id`);
 
 --
 -- Indexes for table `ulasanbuku`
@@ -297,13 +296,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `alasanban`
 --
 ALTER TABLE `alasanban`
-  MODIFY `AlasanBanID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `AlasanBanID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `buku`
 --
 ALTER TABLE `buku`
-  MODIFY `BukuID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `BukuID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `kategoribuku`
@@ -327,7 +326,7 @@ ALTER TABLE `koleksipribadi`
 -- AUTO_INCREMENT for table `lokasi`
 --
 ALTER TABLE `lokasi`
-  MODIFY `LokasiID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `LokasiID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `lokasibuku`
@@ -342,12 +341,6 @@ ALTER TABLE `peminjaman`
   MODIFY `PeminjamanID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `statususer`
---
-ALTER TABLE `statususer`
-  MODIFY `StatusUserID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `ulasanbuku`
 --
 ALTER TABLE `ulasanbuku`
@@ -357,7 +350,7 @@ ALTER TABLE `ulasanbuku`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Constraints for dumped tables
@@ -367,7 +360,7 @@ ALTER TABLE `user`
 -- Constraints for table `alasanban`
 --
 ALTER TABLE `alasanban`
-  ADD CONSTRAINT `foreignStatususerToAlasanban` FOREIGN KEY (`StatusUserID`) REFERENCES `statususer` (`StatusUserID`);
+  ADD CONSTRAINT `foreignUserToAlasanban` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
 
 --
 -- Constraints for table `kategoribuku_relasi`
@@ -396,12 +389,6 @@ ALTER TABLE `lokasibuku`
 ALTER TABLE `peminjaman`
   ADD CONSTRAINT `foreignBukuToPeminjaman` FOREIGN KEY (`BukuID`) REFERENCES `buku` (`BukuID`),
   ADD CONSTRAINT `foreignUserToPeminjaman` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
-
---
--- Constraints for table `statususer`
---
-ALTER TABLE `statususer`
-  ADD CONSTRAINT `foreignUserToStatususer` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`);
 
 --
 -- Constraints for table `ulasanbuku`
